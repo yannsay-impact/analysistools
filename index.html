@@ -59,6 +59,7 @@
 </h1></div>
 <!-- badges: start -->
 
+<!-- badges: end -->
 <p>The goal of analysistools is to …</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -82,8 +83,9 @@
 <span>  <span class="st">"admin2"</span>,</span>
 <span>  <span class="st">"expenditure_debt"</span>,</span>
 <span>  <span class="st">"income_v1_salaried_work"</span>,</span>
-<span>  <span class="st">"wash_drinkingwatersource"</span></span>
-<span><span class="op">)</span><span class="op">]</span></span>
+<span>  <span class="st">"wash_drinkingwatersource"</span>, </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">grep</a></span><span class="op">(</span><span class="st">"edu_learning_conditions_reasons_v1"</span>, <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">analysistools_MSNA_template_data</span><span class="op">)</span>, value <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<span>  <span class="op">)</span><span class="op">]</span></span>
 <span></span>
 <span><span class="va">example_sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
 <span>  strata <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"admin1a"</span>, <span class="st">"admin1b"</span>, <span class="st">"admin1c"</span><span class="op">)</span>,</span>
@@ -97,21 +99,14 @@
 <span>    population_column <span class="op">=</span> <span class="st">"population"</span></span>
 <span>  <span class="op">)</span></span>
 <span></span>
-<span><span class="va">weighted_shorter_df</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;    admin1  admin2 expenditure_debt income_v1_salaried_work</span></span>
-<span><span class="co">#&gt; 1 admin1b admin2a               22                      18</span></span>
-<span><span class="co">#&gt; 2 admin1c admin2b               18                      24</span></span>
-<span><span class="co">#&gt; 3 admin1c admin2b               18                      22</span></span>
-<span><span class="co">#&gt; 4 admin1c admin2b               23                      20</span></span>
-<span><span class="co">#&gt; 5 admin1c admin2a               20                      21</span></span>
-<span><span class="co">#&gt; 6 admin1c admin2b               23                      22</span></span>
-<span><span class="co">#&gt;   wash_drinkingwatersource  weights</span></span>
-<span><span class="co">#&gt; 1            tanker_trucks 1.157407</span></span>
-<span><span class="co">#&gt; 2            bottled_water 1.190476</span></span>
-<span><span class="co">#&gt; 3              water_kiosk 1.190476</span></span>
-<span><span class="co">#&gt; 4                dont_know 1.190476</span></span>
-<span><span class="co">#&gt; 5                dont_know 1.190476</span></span>
-<span><span class="co">#&gt; 6              water_kiosk 1.190476</span></span></code></pre></div>
+<span><span class="va">weighted_shorter_df</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"admin1"</span>, <span class="st">"weights"</span><span class="op">)</span><span class="op">]</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    admin1  weights</span></span>
+<span><span class="co">#&gt; 1 admin1b 1.157407</span></span>
+<span><span class="co">#&gt; 2 admin1c 1.190476</span></span>
+<span><span class="co">#&gt; 3 admin1c 1.190476</span></span>
+<span><span class="co">#&gt; 4 admin1c 1.190476</span></span>
+<span><span class="co">#&gt; 5 admin1c 1.190476</span></span>
+<span><span class="co">#&gt; 6 admin1c 1.190476</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="how-to-perform-a-descriptive-analysis-mean-median-proportions">How to perform a descriptive analysis (mean, median, proportions)<a class="anchor" aria-label="anchor" href="#how-to-perform-a-descriptive-analysis-mean-median-proportions"></a>
@@ -121,7 +116,7 @@
 <code class="sourceCode R"><span><span class="va">example_design</span> <span class="op">&lt;-</span> <span class="fu">srvyr</span><span class="fu">::</span><span class="fu"><a href="http://gdfe.co/srvyr/reference/as_survey.html" class="external-link">as_survey</a></span><span class="op">(</span><span class="va">weighted_shorter_df</span>, strata <span class="op">=</span> <span class="va">admin1</span>, weights <span class="op">=</span> <span class="va">weights</span><span class="op">)</span></span></code></pre></div>
 <p>If only the design is provided, it will perform mean, median and proportions.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ex1_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/create_analysis.html">create_analysis</a></span><span class="op">(</span>.design <span class="op">=</span> <span class="va">example_design</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">ex1_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/create_analysis.html">create_analysis</a></span><span class="op">(</span>design <span class="op">=</span> <span class="va">example_design</span>, sm_separator <span class="op">=</span> <span class="st">"/"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Joining with `by = join_by(type)`</span></span></code></pre></div>
 <p>It should return an object with 3 elements: - the results table (in a long format and analysis key), - the dataset used, - the list of analysis performed.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
@@ -138,7 +133,7 @@
 <span><span class="co">#&gt; 4 prop_select_o… admin2       admin2a            &lt;NA&gt;      &lt;NA&gt;            0.284</span></span>
 <span><span class="co">#&gt; 5 prop_select_o… admin2       admin2b            &lt;NA&gt;      &lt;NA&gt;            0.385</span></span>
 <span><span class="co">#&gt; 6 prop_select_o… admin2       admin2c            &lt;NA&gt;      &lt;NA&gt;            0.331</span></span>
-<span><span class="co">#&gt; # ℹ 7 more variables: stat_low &lt;dbl&gt;, stat_upp &lt;dbl&gt;, n &lt;int&gt;, n_total &lt;int&gt;,</span></span>
+<span><span class="co">#&gt; # ℹ 7 more variables: stat_low &lt;dbl&gt;, stat_upp &lt;dbl&gt;, n &lt;dbl&gt;, n_total &lt;dbl&gt;,</span></span>
 <span><span class="co">#&gt; #   n_w &lt;dbl&gt;, n_w_total &lt;dbl&gt;, analysis_key &lt;chr&gt;</span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ex1_results</span><span class="op">[[</span><span class="st">"loa"</span><span class="op">]</span><span class="op">]</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -154,80 +149,87 @@
 </h4>
 <p>The group_var can be used to defined the different grouping, independent variables. For example: - one variable</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ex2_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/create_analysis.html">create_analysis</a></span><span class="op">(</span>.design <span class="op">=</span> <span class="fu">srvyr</span><span class="fu">::</span><span class="fu"><a href="http://gdfe.co/srvyr/reference/as_survey.html" class="external-link">as_survey</a></span><span class="op">(</span><span class="va">shorter_df</span><span class="op">)</span>, group_var <span class="op">=</span> <span class="st">"admin1"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">ex2_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/create_analysis.html">create_analysis</a></span><span class="op">(</span>design <span class="op">=</span> <span class="fu">srvyr</span><span class="fu">::</span><span class="fu"><a href="http://gdfe.co/srvyr/reference/as_survey.html" class="external-link">as_survey</a></span><span class="op">(</span><span class="va">shorter_df</span><span class="op">)</span>, group_var <span class="op">=</span> <span class="st">"admin1"</span>, sm_separator <span class="op">=</span> <span class="st">"/"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Joining with `by = join_by(type)`</span></span>
+<span><span class="co">#&gt; ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 93% | ETA: 0s</span></span>
 <span><span class="va">ex2_results</span><span class="op">[[</span><span class="st">"loa"</span><span class="op">]</span><span class="op">]</span></span>
-<span><span class="co">#&gt;      analysis_type             analysis_var group_var level</span></span>
-<span><span class="co">#&gt; 1  prop_select_one                   admin1      &lt;NA&gt;  0.95</span></span>
-<span><span class="co">#&gt; 2  prop_select_one                   admin2      &lt;NA&gt;  0.95</span></span>
-<span><span class="co">#&gt; 3             mean         expenditure_debt      &lt;NA&gt;  0.95</span></span>
-<span><span class="co">#&gt; 4           median         expenditure_debt      &lt;NA&gt;  0.95</span></span>
-<span><span class="co">#&gt; 5             mean  income_v1_salaried_work      &lt;NA&gt;  0.95</span></span>
-<span><span class="co">#&gt; 6           median  income_v1_salaried_work      &lt;NA&gt;  0.95</span></span>
-<span><span class="co">#&gt; 7  prop_select_one wash_drinkingwatersource      &lt;NA&gt;  0.95</span></span>
-<span><span class="co">#&gt; 8  prop_select_one                   admin2    admin1  0.95</span></span>
-<span><span class="co">#&gt; 9             mean         expenditure_debt    admin1  0.95</span></span>
-<span><span class="co">#&gt; 10          median         expenditure_debt    admin1  0.95</span></span>
-<span><span class="co">#&gt; 11            mean  income_v1_salaried_work    admin1  0.95</span></span>
-<span><span class="co">#&gt; 12          median  income_v1_salaried_work    admin1  0.95</span></span>
-<span><span class="co">#&gt; 13 prop_select_one wash_drinkingwatersource    admin1  0.95</span></span></code></pre></div>
+<span><span class="co">#&gt;           analysis_type                       analysis_var group_var level</span></span>
+<span><span class="co">#&gt; 1       prop_select_one                             admin1      &lt;NA&gt;  0.95</span></span>
+<span><span class="co">#&gt; 2       prop_select_one                             admin2      &lt;NA&gt;  0.95</span></span>
+<span><span class="co">#&gt; 3                  mean                   expenditure_debt      &lt;NA&gt;  0.95</span></span>
+<span><span class="co">#&gt; 4                median                   expenditure_debt      &lt;NA&gt;  0.95</span></span>
+<span><span class="co">#&gt; 5                  mean            income_v1_salaried_work      &lt;NA&gt;  0.95</span></span>
+<span><span class="co">#&gt; 6                median            income_v1_salaried_work      &lt;NA&gt;  0.95</span></span>
+<span><span class="co">#&gt; 7       prop_select_one           wash_drinkingwatersource      &lt;NA&gt;  0.95</span></span>
+<span><span class="co">#&gt; 8  prop_select_multiple edu_learning_conditions_reasons_v1      &lt;NA&gt;  0.95</span></span>
+<span><span class="co">#&gt; 9       prop_select_one                             admin2    admin1  0.95</span></span>
+<span><span class="co">#&gt; 10                 mean                   expenditure_debt    admin1  0.95</span></span>
+<span><span class="co">#&gt; 11               median                   expenditure_debt    admin1  0.95</span></span>
+<span><span class="co">#&gt; 12                 mean            income_v1_salaried_work    admin1  0.95</span></span>
+<span><span class="co">#&gt; 13               median            income_v1_salaried_work    admin1  0.95</span></span>
+<span><span class="co">#&gt; 14      prop_select_one           wash_drinkingwatersource    admin1  0.95</span></span>
+<span><span class="co">#&gt; 15 prop_select_multiple edu_learning_conditions_reasons_v1    admin1  0.95</span></span></code></pre></div>
 <ul>
 <li>two variables separately</li>
 </ul>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ex3_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/create_analysis.html">create_analysis</a></span><span class="op">(</span>.design <span class="op">=</span> <span class="fu">srvyr</span><span class="fu">::</span><span class="fu"><a href="http://gdfe.co/srvyr/reference/as_survey.html" class="external-link">as_survey</a></span><span class="op">(</span><span class="va">shorter_df</span><span class="op">)</span>, group_var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"admin1"</span>, <span class="st">"admin2"</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">ex3_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/create_analysis.html">create_analysis</a></span><span class="op">(</span>design <span class="op">=</span> <span class="fu">srvyr</span><span class="fu">::</span><span class="fu"><a href="http://gdfe.co/srvyr/reference/as_survey.html" class="external-link">as_survey</a></span><span class="op">(</span><span class="va">shorter_df</span><span class="op">)</span>, group_var <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"admin1"</span>, <span class="st">"admin2"</span><span class="op">)</span>, sm_separator <span class="op">=</span> <span class="st">"/"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Joining with `by = join_by(type)`</span></span>
-<span><span class="co">#&gt; ■■■■■■■■■■■■ 37% | ETA: 3s</span></span>
-<span><span class="co">#&gt; ■■■■■■■■■■■■■■ 42% | ETA: 3s</span></span>
-<span><span class="co">#&gt; ■■■■■■■■■■■■■■■ 47% | ETA: 3s</span></span>
-<span><span class="co">#&gt; ■■■■■■■■■■■■■■■■■ 53% | ETA: 2s</span></span>
-<span><span class="co">#&gt; ■■■■■■■■■■■■■■■■■■ 58% | ETA: 2s</span></span>
-<span><span class="co">#&gt; ■■■■■■■■■■■■■■■■■■■■■■ 68% | ETA: 2s</span></span>
-<span><span class="co">#&gt; ■■■■■■■■■■■■■■■■■■■■■■■ 74% | ETA: 2s</span></span>
-<span><span class="co">#&gt; ■■■■■■■■■■■■■■■■■■■■■■■■■■ 84% | ETA: 1s</span></span>
-<span><span class="co">#&gt; ■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 89% | ETA: 1s</span></span>
+<span><span class="co">#&gt; ■■■■■■■■■■■■■ 41% | ETA: 2s</span></span>
+<span><span class="co">#&gt; ■■■■■■■■■■■■■■■■ 50% | ETA: 1s</span></span>
+<span><span class="co">#&gt; ■■■■■■■■■■■■■■■■■■■■ 64% | ETA: 1s</span></span>
+<span><span class="co">#&gt; ■■■■■■■■■■■■■■■■■■■■■ 68% | ETA: 1s</span></span>
+<span><span class="co">#&gt; ■■■■■■■■■■■■■■■■■■■■■■■ 73% | ETA: 1s</span></span>
+<span><span class="co">#&gt; ■■■■■■■■■■■■■■■■■■■■■■■■ 77% | ETA: 1s</span></span>
+<span><span class="co">#&gt; ■■■■■■■■■■■■■■■■■■■■■■■■■■■ 86% | ETA: 1s</span></span>
+<span><span class="co">#&gt; ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 95% | ETA: 0s</span></span>
 <span><span class="va">ex3_results</span><span class="op">[[</span><span class="st">"loa"</span><span class="op">]</span><span class="op">]</span></span>
-<span><span class="co">#&gt;      analysis_type             analysis_var group_var level</span></span>
-<span><span class="co">#&gt; 1  prop_select_one                   admin1      &lt;NA&gt;  0.95</span></span>
-<span><span class="co">#&gt; 2  prop_select_one                   admin2      &lt;NA&gt;  0.95</span></span>
-<span><span class="co">#&gt; 3             mean         expenditure_debt      &lt;NA&gt;  0.95</span></span>
-<span><span class="co">#&gt; 4           median         expenditure_debt      &lt;NA&gt;  0.95</span></span>
-<span><span class="co">#&gt; 5             mean  income_v1_salaried_work      &lt;NA&gt;  0.95</span></span>
-<span><span class="co">#&gt; 6           median  income_v1_salaried_work      &lt;NA&gt;  0.95</span></span>
-<span><span class="co">#&gt; 7  prop_select_one wash_drinkingwatersource      &lt;NA&gt;  0.95</span></span>
-<span><span class="co">#&gt; 8  prop_select_one                   admin2    admin1  0.95</span></span>
-<span><span class="co">#&gt; 9             mean         expenditure_debt    admin1  0.95</span></span>
-<span><span class="co">#&gt; 10          median         expenditure_debt    admin1  0.95</span></span>
-<span><span class="co">#&gt; 11            mean  income_v1_salaried_work    admin1  0.95</span></span>
-<span><span class="co">#&gt; 12          median  income_v1_salaried_work    admin1  0.95</span></span>
-<span><span class="co">#&gt; 13 prop_select_one wash_drinkingwatersource    admin1  0.95</span></span>
-<span><span class="co">#&gt; 14 prop_select_one                   admin1    admin2  0.95</span></span>
-<span><span class="co">#&gt; 15            mean         expenditure_debt    admin2  0.95</span></span>
-<span><span class="co">#&gt; 16          median         expenditure_debt    admin2  0.95</span></span>
-<span><span class="co">#&gt; 17            mean  income_v1_salaried_work    admin2  0.95</span></span>
-<span><span class="co">#&gt; 18          median  income_v1_salaried_work    admin2  0.95</span></span>
-<span><span class="co">#&gt; 19 prop_select_one wash_drinkingwatersource    admin2  0.95</span></span></code></pre></div>
+<span><span class="co">#&gt;           analysis_type                       analysis_var group_var level</span></span>
+<span><span class="co">#&gt; 1       prop_select_one                             admin1      &lt;NA&gt;  0.95</span></span>
+<span><span class="co">#&gt; 2       prop_select_one                             admin2      &lt;NA&gt;  0.95</span></span>
+<span><span class="co">#&gt; 3                  mean                   expenditure_debt      &lt;NA&gt;  0.95</span></span>
+<span><span class="co">#&gt; 4                median                   expenditure_debt      &lt;NA&gt;  0.95</span></span>
+<span><span class="co">#&gt; 5                  mean            income_v1_salaried_work      &lt;NA&gt;  0.95</span></span>
+<span><span class="co">#&gt; 6                median            income_v1_salaried_work      &lt;NA&gt;  0.95</span></span>
+<span><span class="co">#&gt; 7       prop_select_one           wash_drinkingwatersource      &lt;NA&gt;  0.95</span></span>
+<span><span class="co">#&gt; 8  prop_select_multiple edu_learning_conditions_reasons_v1      &lt;NA&gt;  0.95</span></span>
+<span><span class="co">#&gt; 9       prop_select_one                             admin2    admin1  0.95</span></span>
+<span><span class="co">#&gt; 10                 mean                   expenditure_debt    admin1  0.95</span></span>
+<span><span class="co">#&gt; 11               median                   expenditure_debt    admin1  0.95</span></span>
+<span><span class="co">#&gt; 12                 mean            income_v1_salaried_work    admin1  0.95</span></span>
+<span><span class="co">#&gt; 13               median            income_v1_salaried_work    admin1  0.95</span></span>
+<span><span class="co">#&gt; 14      prop_select_one           wash_drinkingwatersource    admin1  0.95</span></span>
+<span><span class="co">#&gt; 15 prop_select_multiple edu_learning_conditions_reasons_v1    admin1  0.95</span></span>
+<span><span class="co">#&gt; 16      prop_select_one                             admin1    admin2  0.95</span></span>
+<span><span class="co">#&gt; 17                 mean                   expenditure_debt    admin2  0.95</span></span>
+<span><span class="co">#&gt; 18               median                   expenditure_debt    admin2  0.95</span></span>
+<span><span class="co">#&gt; 19                 mean            income_v1_salaried_work    admin2  0.95</span></span>
+<span><span class="co">#&gt; 20               median            income_v1_salaried_work    admin2  0.95</span></span>
+<span><span class="co">#&gt; 21      prop_select_one           wash_drinkingwatersource    admin2  0.95</span></span>
+<span><span class="co">#&gt; 22 prop_select_multiple edu_learning_conditions_reasons_v1    admin2  0.95</span></span></code></pre></div>
 <ul>
 <li>two variables combined</li>
 </ul>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ex4_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/create_analysis.html">create_analysis</a></span><span class="op">(</span>.design <span class="op">=</span> <span class="fu">srvyr</span><span class="fu">::</span><span class="fu"><a href="http://gdfe.co/srvyr/reference/as_survey.html" class="external-link">as_survey</a></span><span class="op">(</span><span class="va">shorter_df</span><span class="op">)</span>, group_var <span class="op">=</span> <span class="st">"admin1, admin2"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">ex4_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/create_analysis.html">create_analysis</a></span><span class="op">(</span>design <span class="op">=</span> <span class="fu">srvyr</span><span class="fu">::</span><span class="fu"><a href="http://gdfe.co/srvyr/reference/as_survey.html" class="external-link">as_survey</a></span><span class="op">(</span><span class="va">shorter_df</span><span class="op">)</span>, group_var <span class="op">=</span> <span class="st">"admin1, admin2"</span>, sm_separator <span class="op">=</span> <span class="st">"/"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Joining with `by = join_by(type)`</span></span>
-<span><span class="co">#&gt; ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 92% | ETA: 0s</span></span>
+<span><span class="co">#&gt; ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 93% | ETA: 0s</span></span>
 <span><span class="va">ex4_results</span><span class="op">[[</span><span class="st">"loa"</span><span class="op">]</span><span class="op">]</span></span>
-<span><span class="co">#&gt;      analysis_type             analysis_var      group_var level</span></span>
-<span><span class="co">#&gt; 1  prop_select_one                   admin1           &lt;NA&gt;  0.95</span></span>
-<span><span class="co">#&gt; 2  prop_select_one                   admin2           &lt;NA&gt;  0.95</span></span>
-<span><span class="co">#&gt; 3             mean         expenditure_debt           &lt;NA&gt;  0.95</span></span>
-<span><span class="co">#&gt; 4           median         expenditure_debt           &lt;NA&gt;  0.95</span></span>
-<span><span class="co">#&gt; 5             mean  income_v1_salaried_work           &lt;NA&gt;  0.95</span></span>
-<span><span class="co">#&gt; 6           median  income_v1_salaried_work           &lt;NA&gt;  0.95</span></span>
-<span><span class="co">#&gt; 7  prop_select_one wash_drinkingwatersource           &lt;NA&gt;  0.95</span></span>
-<span><span class="co">#&gt; 8             mean         expenditure_debt admin1, admin2  0.95</span></span>
-<span><span class="co">#&gt; 9           median         expenditure_debt admin1, admin2  0.95</span></span>
-<span><span class="co">#&gt; 10            mean  income_v1_salaried_work admin1, admin2  0.95</span></span>
-<span><span class="co">#&gt; 11          median  income_v1_salaried_work admin1, admin2  0.95</span></span>
-<span><span class="co">#&gt; 12 prop_select_one wash_drinkingwatersource admin1, admin2  0.95</span></span></code></pre></div>
+<span><span class="co">#&gt;           analysis_type                       analysis_var      group_var level</span></span>
+<span><span class="co">#&gt; 1       prop_select_one                             admin1           &lt;NA&gt;  0.95</span></span>
+<span><span class="co">#&gt; 2       prop_select_one                             admin2           &lt;NA&gt;  0.95</span></span>
+<span><span class="co">#&gt; 3                  mean                   expenditure_debt           &lt;NA&gt;  0.95</span></span>
+<span><span class="co">#&gt; 4                median                   expenditure_debt           &lt;NA&gt;  0.95</span></span>
+<span><span class="co">#&gt; 5                  mean            income_v1_salaried_work           &lt;NA&gt;  0.95</span></span>
+<span><span class="co">#&gt; 6                median            income_v1_salaried_work           &lt;NA&gt;  0.95</span></span>
+<span><span class="co">#&gt; 7       prop_select_one           wash_drinkingwatersource           &lt;NA&gt;  0.95</span></span>
+<span><span class="co">#&gt; 8  prop_select_multiple edu_learning_conditions_reasons_v1           &lt;NA&gt;  0.95</span></span>
+<span><span class="co">#&gt; 9                  mean                   expenditure_debt admin1, admin2  0.95</span></span>
+<span><span class="co">#&gt; 10               median                   expenditure_debt admin1, admin2  0.95</span></span>
+<span><span class="co">#&gt; 11                 mean            income_v1_salaried_work admin1, admin2  0.95</span></span>
+<span><span class="co">#&gt; 12               median            income_v1_salaried_work admin1, admin2  0.95</span></span>
+<span><span class="co">#&gt; 13      prop_select_one           wash_drinkingwatersource admin1, admin2  0.95</span></span>
+<span><span class="co">#&gt; 14 prop_select_multiple edu_learning_conditions_reasons_v1 admin1, admin2  0.95</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
@@ -235,20 +237,22 @@
 <a class="anchor" aria-label="anchor" href="#how-to-perform-a-descriptive-analysis-with-a-list-of-analysis"></a>
 </h3>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ex5_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/create_analysis.html">create_analysis</a></span><span class="op">(</span>.design <span class="op">=</span> <span class="fu">srvyr</span><span class="fu">::</span><span class="fu"><a href="http://gdfe.co/srvyr/reference/as_survey.html" class="external-link">as_survey</a></span><span class="op">(</span><span class="va">shorter_df</span><span class="op">)</span>, loa <span class="op">=</span> <span class="va">analysistools_loa</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">ex5_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/create_analysis.html">create_analysis</a></span><span class="op">(</span>design <span class="op">=</span> <span class="fu">srvyr</span><span class="fu">::</span><span class="fu"><a href="http://gdfe.co/srvyr/reference/as_survey.html" class="external-link">as_survey</a></span><span class="op">(</span><span class="va">shorter_df</span><span class="op">)</span>, loa <span class="op">=</span> <span class="va">analysistools_MSNA_template_loa</span>, sm_separator <span class="op">=</span> <span class="st">"/"</span><span class="op">)</span></span>
 <span><span class="va">ex5_results</span><span class="op">[[</span><span class="st">"loa"</span><span class="op">]</span><span class="op">]</span></span>
-<span><span class="co">#&gt;      analysis_type             analysis_var group_var level</span></span>
-<span><span class="co">#&gt; 1  prop_select_one                   admin1      &lt;NA&gt;  0.95</span></span>
-<span><span class="co">#&gt; 2             mean  income_v1_salaried_work      &lt;NA&gt;  0.95</span></span>
-<span><span class="co">#&gt; 3           median  income_v1_salaried_work      &lt;NA&gt;  0.95</span></span>
-<span><span class="co">#&gt; 4             mean         expenditure_debt      &lt;NA&gt;  0.95</span></span>
-<span><span class="co">#&gt; 5           median         expenditure_debt      &lt;NA&gt;  0.95</span></span>
-<span><span class="co">#&gt; 6  prop_select_one wash_drinkingwatersource      &lt;NA&gt;  0.95</span></span>
-<span><span class="co">#&gt; 7             mean  income_v1_salaried_work    admin1  0.95</span></span>
-<span><span class="co">#&gt; 8           median  income_v1_salaried_work    admin1  0.95</span></span>
-<span><span class="co">#&gt; 9             mean         expenditure_debt    admin1  0.95</span></span>
-<span><span class="co">#&gt; 10          median         expenditure_debt    admin1  0.95</span></span>
-<span><span class="co">#&gt; 11 prop_select_one wash_drinkingwatersource    admin1  0.95</span></span></code></pre></div>
+<span><span class="co">#&gt;           analysis_type                       analysis_var group_var level</span></span>
+<span><span class="co">#&gt; 1       prop_select_one                             admin1      &lt;NA&gt;  0.95</span></span>
+<span><span class="co">#&gt; 2                  mean            income_v1_salaried_work      &lt;NA&gt;  0.95</span></span>
+<span><span class="co">#&gt; 3                median            income_v1_salaried_work      &lt;NA&gt;  0.95</span></span>
+<span><span class="co">#&gt; 4                  mean                   expenditure_debt      &lt;NA&gt;  0.95</span></span>
+<span><span class="co">#&gt; 5                median                   expenditure_debt      &lt;NA&gt;  0.95</span></span>
+<span><span class="co">#&gt; 6       prop_select_one           wash_drinkingwatersource      &lt;NA&gt;  0.95</span></span>
+<span><span class="co">#&gt; 7  prop_select_multiple edu_learning_conditions_reasons_v1      &lt;NA&gt;  0.95</span></span>
+<span><span class="co">#&gt; 8                  mean            income_v1_salaried_work    admin1  0.95</span></span>
+<span><span class="co">#&gt; 9                median            income_v1_salaried_work    admin1  0.95</span></span>
+<span><span class="co">#&gt; 10                 mean                   expenditure_debt    admin1  0.95</span></span>
+<span><span class="co">#&gt; 11               median                   expenditure_debt    admin1  0.95</span></span>
+<span><span class="co">#&gt; 12      prop_select_one           wash_drinkingwatersource    admin1  0.95</span></span>
+<span><span class="co">#&gt; 13 prop_select_multiple edu_learning_conditions_reasons_v1    admin1  0.95</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="how-to-perform-specfic-analysis">How to perform specfic analysis<a class="anchor" aria-label="anchor" href="#how-to-perform-specfic-analysis"></a>
@@ -368,9 +372,9 @@
 <span><span class="co">#&gt; # A tibble: 3 × 13</span></span>
 <span><span class="co">#&gt;   analysis_type  analysis_var analysis_var_value group_var group_var_value  stat</span></span>
 <span><span class="co">#&gt;   &lt;chr&gt;          &lt;chr&gt;        &lt;chr&gt;              &lt;chr&gt;     &lt;chr&gt;           &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 prop_select_o… value        a                  &lt;NA&gt;      &lt;NA&gt;             0.51</span></span>
-<span><span class="co">#&gt; 2 prop_select_o… value        b                  &lt;NA&gt;      &lt;NA&gt;             0.36</span></span>
-<span><span class="co">#&gt; 3 prop_select_o… value        c                  &lt;NA&gt;      &lt;NA&gt;             0.13</span></span>
+<span><span class="co">#&gt; 1 prop_select_o… value        a                  &lt;NA&gt;      &lt;NA&gt;             0.58</span></span>
+<span><span class="co">#&gt; 2 prop_select_o… value        b                  &lt;NA&gt;      &lt;NA&gt;             0.31</span></span>
+<span><span class="co">#&gt; 3 prop_select_o… value        c                  &lt;NA&gt;      &lt;NA&gt;             0.11</span></span>
 <span><span class="co">#&gt; # ℹ 7 more variables: stat_low &lt;dbl&gt;, stat_upp &lt;dbl&gt;, n &lt;int&gt;, n_total &lt;int&gt;,</span></span>
 <span><span class="co">#&gt; #   n_w &lt;dbl&gt;, n_w_total &lt;dbl&gt;, analysis_key &lt;chr&gt;</span></span>
 <span><span class="fu"><a href="reference/create_analysis_prop_select_one.html">create_analysis_prop_select_one</a></span><span class="op">(</span><span class="fu">srvyr</span><span class="fu">::</span><span class="fu"><a href="http://gdfe.co/srvyr/reference/as_survey.html" class="external-link">as_survey</a></span><span class="op">(</span><span class="va">somedata</span>, strata <span class="op">=</span> <span class="va">groups</span><span class="op">)</span>,</span>
@@ -379,14 +383,14 @@
 <span>  level <span class="op">=</span> <span class="fl">.95</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 6 × 13</span></span>
-<span><span class="co">#&gt;   analysis_type  analysis_var analysis_var_value group_var group_var_value  stat</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;          &lt;chr&gt;        &lt;chr&gt;              &lt;chr&gt;     &lt;chr&gt;           &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 prop_select_o… value        a                  groups    group_a         0.516</span></span>
-<span><span class="co">#&gt; 2 prop_select_o… value        b                  groups    group_a         0.359</span></span>
-<span><span class="co">#&gt; 3 prop_select_o… value        c                  groups    group_a         0.125</span></span>
-<span><span class="co">#&gt; 4 prop_select_o… value        a                  groups    group_b         0.5  </span></span>
-<span><span class="co">#&gt; 5 prop_select_o… value        b                  groups    group_b         0.361</span></span>
-<span><span class="co">#&gt; 6 prop_select_o… value        c                  groups    group_b         0.139</span></span>
+<span><span class="co">#&gt;   analysis_type analysis_var analysis_var_value group_var group_var_value   stat</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;         &lt;chr&gt;        &lt;chr&gt;              &lt;chr&gt;     &lt;chr&gt;            &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 prop_select_… value        a                  groups    group_a         0.569 </span></span>
+<span><span class="co">#&gt; 2 prop_select_… value        b                  groups    group_a         0.353 </span></span>
+<span><span class="co">#&gt; 3 prop_select_… value        c                  groups    group_a         0.0784</span></span>
+<span><span class="co">#&gt; 4 prop_select_… value        a                  groups    group_b         0.592 </span></span>
+<span><span class="co">#&gt; 5 prop_select_… value        b                  groups    group_b         0.265 </span></span>
+<span><span class="co">#&gt; 6 prop_select_… value        c                  groups    group_b         0.143 </span></span>
 <span><span class="co">#&gt; # ℹ 7 more variables: stat_low &lt;dbl&gt;, stat_upp &lt;dbl&gt;, n &lt;int&gt;, n_total &lt;int&gt;,</span></span>
 <span><span class="co">#&gt; #   n_w &lt;dbl&gt;, n_w_total &lt;dbl&gt;, analysis_key &lt;chr&gt;</span></span></code></pre></div>
 </div>
@@ -429,12 +433,12 @@
 <span>  level <span class="op">=</span> <span class="fl">0.95</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 4 × 13</span></span>
-<span><span class="co">#&gt;   analysis_type analysis_var analysis_var_value group_var group_var_value   stat</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;         &lt;chr&gt;        &lt;chr&gt;              &lt;chr&gt;     &lt;chr&gt;            &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 prop_select_… smvar        option1            &lt;NA&gt;      &lt;NA&gt;            0.698 </span></span>
-<span><span class="co">#&gt; 2 prop_select_… smvar        option2            &lt;NA&gt;      &lt;NA&gt;            0.635 </span></span>
-<span><span class="co">#&gt; 3 prop_select_… smvar        option3            &lt;NA&gt;      &lt;NA&gt;            0.0312</span></span>
-<span><span class="co">#&gt; 4 prop_select_… smvar        option4            &lt;NA&gt;      &lt;NA&gt;            0.854 </span></span>
+<span><span class="co">#&gt;   analysis_type  analysis_var analysis_var_value group_var group_var_value  stat</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;          &lt;chr&gt;        &lt;chr&gt;              &lt;chr&gt;     &lt;chr&gt;           &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 prop_select_m… smvar        option1            &lt;NA&gt;      &lt;NA&gt;            0.677</span></span>
+<span><span class="co">#&gt; 2 prop_select_m… smvar        option2            &lt;NA&gt;      &lt;NA&gt;            0.566</span></span>
+<span><span class="co">#&gt; 3 prop_select_m… smvar        option3            &lt;NA&gt;      &lt;NA&gt;            0.101</span></span>
+<span><span class="co">#&gt; 4 prop_select_m… smvar        option4            &lt;NA&gt;      &lt;NA&gt;            0.778</span></span>
 <span><span class="co">#&gt; # ℹ 7 more variables: stat_low &lt;dbl&gt;, stat_upp &lt;dbl&gt;, n &lt;dbl&gt;, n_total &lt;dbl&gt;,</span></span>
 <span><span class="co">#&gt; #   n_w &lt;dbl&gt;, n_w_total &lt;dbl&gt;, analysis_key &lt;chr&gt;</span></span>
 <span></span>
@@ -444,16 +448,16 @@
 <span>  level <span class="op">=</span> <span class="fl">0.95</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 8 × 13</span></span>
-<span><span class="co">#&gt;   analysis_type  analysis_var analysis_var_value group_var group_var_value  stat</span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;          &lt;chr&gt;        &lt;chr&gt;              &lt;chr&gt;     &lt;chr&gt;           &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 prop_select_m… smvar        option1            groups    group_a         0.66 </span></span>
-<span><span class="co">#&gt; 2 prop_select_m… smvar        option2            groups    group_a         0.66 </span></span>
-<span><span class="co">#&gt; 3 prop_select_m… smvar        option3            groups    group_a         0.06 </span></span>
-<span><span class="co">#&gt; 4 prop_select_m… smvar        option4            groups    group_a         0.84 </span></span>
-<span><span class="co">#&gt; 5 prop_select_m… smvar        option1            groups    group_b         0.739</span></span>
-<span><span class="co">#&gt; 6 prop_select_m… smvar        option2            groups    group_b         0.609</span></span>
-<span><span class="co">#&gt; 7 prop_select_m… smvar        option3            groups    group_b         0    </span></span>
-<span><span class="co">#&gt; 8 prop_select_m… smvar        option4            groups    group_b         0.870</span></span>
+<span><span class="co">#&gt;   analysis_type analysis_var analysis_var_value group_var group_var_value   stat</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;         &lt;chr&gt;        &lt;chr&gt;              &lt;chr&gt;     &lt;chr&gt;            &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 prop_select_… smvar        option1            groups    group_a         0.614 </span></span>
+<span><span class="co">#&gt; 2 prop_select_… smvar        option2            groups    group_a         0.568 </span></span>
+<span><span class="co">#&gt; 3 prop_select_… smvar        option3            groups    group_a         0.0909</span></span>
+<span><span class="co">#&gt; 4 prop_select_… smvar        option4            groups    group_a         0.773 </span></span>
+<span><span class="co">#&gt; 5 prop_select_… smvar        option1            groups    group_b         0.727 </span></span>
+<span><span class="co">#&gt; 6 prop_select_… smvar        option2            groups    group_b         0.564 </span></span>
+<span><span class="co">#&gt; 7 prop_select_… smvar        option3            groups    group_b         0.109 </span></span>
+<span><span class="co">#&gt; 8 prop_select_… smvar        option4            groups    group_b         0.782 </span></span>
 <span><span class="co">#&gt; # ℹ 7 more variables: stat_low &lt;dbl&gt;, stat_upp &lt;dbl&gt;, n &lt;dbl&gt;, n_total &lt;dbl&gt;,</span></span>
 <span><span class="co">#&gt; #   n_w &lt;dbl&gt;, n_w_total &lt;dbl&gt;, analysis_key &lt;chr&gt;</span></span></code></pre></div>
 </div>
@@ -561,6 +565,62 @@
 <span><span class="co">#&gt; #   n_w &lt;dbl&gt;, n_w_total &lt;dbl&gt;, analysis_key &lt;chr&gt;</span></span></code></pre></div>
 </div>
 </div>
+<div class="section level3">
+<h3 id="how-to-review-results">How to review results<a class="anchor" aria-label="anchor" href="#how-to-review-results"></a>
+</h3>
+<p>The logic behind reviewing analysis is to compare the results from 2 independent analysis of the same variables using the <em>review_one_variable</em> or <em>review_variables</em> from <a href="https://github.com/impact-initiatives/addindicators" class="external-link">addindicators</a> package</p>
+<p>In this example, the results table to be review and the dataset are loaded.</p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">results_to_review</span> <span class="op">&lt;-</span> <span class="fu">analysistools</span><span class="fu">::</span><span class="va"><a href="reference/analysistools_MSNA_template_with_ratio_results_table.html">analysistools_MSNA_template_with_ratio_results_table</a></span><span class="op">$</span><span class="va">results_table</span></span>
+<span></span>
+<span><span class="va">dataset_to_analyse</span> <span class="op">&lt;-</span> <span class="fu">analysistools</span><span class="fu">::</span><span class="va"><a href="reference/analysistools_MSNA_template_data.html">analysistools_MSNA_template_data</a></span></span></code></pre></div>
+<p>The list of analysis from the results can be reproduced with <em>create_loa_from_results</em> and the analysis key. This <em>loa</em> can be used to create a new analysis to be compared with.</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">me_loa</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/create_loa_from_results.html">create_loa_from_results</a></span><span class="op">(</span><span class="va">results_to_review</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">me_analysis</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/create_analysis.html">create_analysis</a></span><span class="op">(</span><span class="fu">srvyr</span><span class="fu">::</span><span class="fu"><a href="http://gdfe.co/srvyr/reference/as_survey.html" class="external-link">as_survey</a></span><span class="op">(</span><span class="va">dataset_to_analyse</span><span class="op">)</span>,</span>
+<span>                               loa <span class="op">=</span> <span class="va">me_loa</span>,</span>
+<span>                               sm_separator <span class="op">=</span> <span class="st">"/"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; ■■■■■■■■■■■■■■■ 47% | ETA: 1s</span></span>
+<span><span class="co">#&gt; ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■ 93% | ETA: 0s</span></span></code></pre></div>
+<p>The new results and the results to be reviewed are bound together by the <em>analysis_key</em>.</p>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">binded_results</span> <span class="op">&lt;-</span> <span class="va">results_to_review</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">full_join</a></span><span class="op">(</span><span class="va">me_analysis</span><span class="op">$</span><span class="va">results_table</span>, by <span class="op">=</span><span class="st">"analysis_key"</span><span class="op">)</span></span></code></pre></div>
+<p>There are 2 functions in the <a href="https://github.com/impact-initiatives/addindicators" class="external-link">addindicators</a> packages that can be used to review:<br>
+- review_one_variable, to review only one variable<br>
+- review_variables, a wrapper around review_one_variable to be able to review several variables.</p>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"impact-initiatives/analysistools"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://impact-initiatives.github.io/addindicators/" class="external-link">addindicators</a></span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">review_results</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://impact-initiatives.github.io/addindicators/reference/review_variables.html" class="external-link">review_variables</a></span><span class="op">(</span><span class="va">binded_results</span>, </span>
+<span>                                   columns_to_review <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"stat.x"</span>, <span class="st">"stat_low.x"</span>, <span class="st">"stat_upp.x"</span><span class="op">)</span>,</span>
+<span>                                   columns_to_compare_with <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"stat.y"</span>, <span class="st">"stat_low.y"</span>, <span class="st">"stat_upp.y"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">review_results</span><span class="op">$</span><span class="va">review_table</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">variable</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>prop_correction <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">review_check</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 2</span></span>
+<span><span class="co">#&gt;   variable   prop_correction</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;                &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 stat.x                   1</span></span>
+<span><span class="co">#&gt; 2 stat_low.x               1</span></span>
+<span><span class="co">#&gt; 3 stat_upp.x               1</span></span>
+<span></span>
+<span><span class="va">review_results</span><span class="op">$</span><span class="va">review_table</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">variable</span>, <span class="va">review_comment</span><span class="op">)</span> <span class="op"><a href="reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html" class="external-link">tally</a></span><span class="op">(</span>sort <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 3</span></span>
+<span><span class="co">#&gt; # Groups:   variable [3]</span></span>
+<span><span class="co">#&gt;   variable   review_comment     n</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;      &lt;glue&gt;         &lt;int&gt;</span></span>
+<span><span class="co">#&gt; 1 stat.x     Same results     147</span></span>
+<span><span class="co">#&gt; 2 stat_low.x Same results     147</span></span>
+<span><span class="co">#&gt; 3 stat_upp.x Same results     147</span></span></code></pre></div>
+</div>
 </div>
 <div class="section level2">
 <h2 id="code-of-conduct">Code of Conduct<a class="anchor" aria-label="anchor" href="#code-of-conduct"></a>
@@ -601,6 +661,7 @@
 <div class="dev-status">
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
+<li><a href="code_of_conduct.html"><img src="https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg" alt="Contributor Covenant"></a></li>
 <li><a href="https://github.com/impact-initiatives/analysistools/actions/workflows/check-standard.yaml" class="external-link"><img src="https://github.com/impact-initiatives/analysistools/actions/workflows/check-standard.yaml/badge.svg" alt="check-standard"></a></li>
 <li><a href="https://app.codecov.io/gh/impact-initiatives/analysistools?branch=main" class="external-link"><img src="https://codecov.io/gh/impact-initiatives/analysistools/branch/main/graph/badge.svg" alt="Codecov test coverage"></a></li>
 </ul>
