@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">analysistools</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.902</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.903</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -70,11 +70,12 @@ NA is default for no grouping.</p></dd>
     </div>
     <div class="section level2">
     <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
-    <p>The results may differ with median(). There are lots of ways to calculate the median and
-the default calculation between stats::median and survey::svyquantile/srvyr::survey_median are
-different. Default from <em>survey/srvyr</em> is "school" methodology and does not exist in <em>stats</em>
-package. The default for <em>stats</em> is "hf7". <em>survey/srvyr</em> methodology is prefered as these
-packages are built for complex survey design.</p>
+    <p>Default from <em>survey/srvyr</em> is "math" methodology. In case of odds number, it will return
+the lower value. Default for stats::median will calculate the mean between the two points.
+If there is a set of c(1,2), median(1,2) will return 1.5; survey_mean() will return 1 by default.
+create_analysis_median has the "school" methodology set as default, the results will match the
+default results from stats::median, pandas.median If want to calculate with the "math"
+methodology, you should run your own analysis with survey_median.</p>
     </div>
 
     <div class="section level2">
@@ -86,12 +87,10 @@ packages are built for complex survey design.</p>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">me_design</span> <span class="op">&lt;-</span> <span class="fu">srvyr</span><span class="fu">::</span><span class="fu"><a href="http://gdfe.co/srvyr/reference/as_survey.html" class="external-link">as_survey</a></span><span class="op">(</span><span class="va">somedata</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">create_analysis_median</span><span class="op">(</span><span class="va">me_design</span>, analysis_var <span class="op">=</span> <span class="st">"aa"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 13</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   analysis_type analysis_var analysis_var_value group_var group_var_value  stat</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> median        aa           <span style="color: #BB0000;">NA</span>                 <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>                  5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 7 more variables: stat_low &lt;dbl&gt;, stat_upp &lt;dbl&gt;, n &lt;int&gt;, n_total &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   n_w &lt;dbl&gt;, n_w_total &lt;dbl&gt;, analysis_key &lt;chr&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   analysis_type analysis_var analysis_var_value group_var group_var_value stat</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1        median           aa               &lt;NA&gt;      &lt;NA&gt;            &lt;NA&gt;  5.5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   stat_low stat_upp  n n_total n_w n_w_total                       analysis_key</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1        2        9 10      10  10        10 median @/@ aa %/% NA @/@ NA %/% NA</span>
 <span class="r-in"><span><span class="fu">create_analysis_median</span><span class="op">(</span><span class="va">me_design</span>, group_var <span class="op">=</span> <span class="st">"bb"</span>, analysis_var <span class="op">=</span> <span class="st">"aa"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2 × 13</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   analysis_type analysis_var analysis_var_value group_var group_var_value  stat</span>
@@ -103,12 +102,10 @@ packages are built for complex survey design.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">me_design_w</span> <span class="op">&lt;-</span> <span class="fu">srvyr</span><span class="fu">::</span><span class="fu"><a href="http://gdfe.co/srvyr/reference/as_survey.html" class="external-link">as_survey</a></span><span class="op">(</span><span class="va">somedata</span>, weights <span class="op">=</span> <span class="va">weights</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">create_analysis_median</span><span class="op">(</span><span class="va">me_design_w</span>, analysis_var <span class="op">=</span> <span class="st">"aa"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 13</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   analysis_type analysis_var analysis_var_value group_var group_var_value  stat</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>              <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> median        aa           <span style="color: #BB0000;">NA</span>                 <span style="color: #BB0000;">NA</span>        <span style="color: #BB0000;">NA</span>                  6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 7 more variables: stat_low &lt;dbl&gt;, stat_upp &lt;dbl&gt;, n &lt;int&gt;, n_total &lt;dbl&gt;,</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;">#   n_w &lt;dbl&gt;, n_w_total &lt;dbl&gt;, analysis_key &lt;chr&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   analysis_type analysis_var analysis_var_value group_var group_var_value stat</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1        median           aa               &lt;NA&gt;      &lt;NA&gt;            &lt;NA&gt;    6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   stat_low stat_upp  n n_total n_w n_w_total                       analysis_key</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1        2      NaN 10      10  10        10 median @/@ aa %/% NA @/@ NA %/% NA</span>
 <span class="r-in"><span><span class="fu">create_analysis_median</span><span class="op">(</span><span class="va">me_design_w</span>, group_var <span class="op">=</span> <span class="st">"bb"</span>, analysis_var <span class="op">=</span> <span class="st">"aa"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2 × 13</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   analysis_type analysis_var analysis_var_value group_var group_var_value  stat</span>
